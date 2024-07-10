@@ -1,4 +1,5 @@
-﻿using Microsoft.Reporting.WinForms;
+﻿using iText.Kernel.Pdf;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace rep
 {
@@ -24,14 +27,34 @@ namespace rep
             richTextBox2.Text = richTextBox1.Text;
             SaveFileDialog saveDlg = new SaveFileDialog();
             saveDlg.InitialDirectory = @"C:\";
-            saveDlg.Filter = "Excel files|*.xls|pdf|*.pdf|html|*.html";
+            saveDlg.Filter = "Excel files|*.xls|pdf|*.pdf|html|*.html|textfile|*.txt";
             saveDlg.FilterIndex = 0;
             saveDlg.RestoreDirectory = true;
             saveDlg.Title = "Export report";
             if (saveDlg.ShowDialog() == DialogResult.OK)
             {
-               StreamWriter sw = new StreamWriter(saveDlg.FileName);
-                sw.Write(richTextBox1.Text);
+
+                if (saveDlg.FileName.EndsWith(".pdf"))
+                {
+                    
+                    Document document = new Document();
+                    iTextSharp.text.pdf.PdfWriter.GetInstance(document, new FileStream(saveDlg.FileName, FileMode.Create));
+
+                    document.Open();
+
+              
+                    document.Add(new Paragraph("kjfdgiuyfdhiugt"));
+
+                  
+                    document.Close();
+
+
+
+                }
+
+
+
+
             }
 
         }
@@ -44,7 +67,7 @@ namespace rep
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            
+
         }
     }
 }
